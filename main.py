@@ -1,8 +1,9 @@
+from config import Logger
 import sys
 import threading
 import openai
 import os
-from config import Logger
+import logging
 from speech import SpeechAssistant
 from gpt import GPTAssistant, response_is_complete
 from PyQt5.QtWidgets import QApplication
@@ -19,13 +20,21 @@ gpt_assistant = GPTAssistant(api_key)
 
 # Define function to run the voice assistant
 
-
 def run_assistant():
+    # Log the start of the voice assistant
+    logging.info("Starting the voice assistant")
+    
     # Set maximum number of retries for GPT API call
     max_retries = 3
+    speech_assistant.speak("Hello, I'm your personal assistant. How can I help you?")
+    
     while True:
         # Listen for user input and recognize it using speech assistant
         user_input = speech_assistant.listen_and_recognize()
+        
+        # Log user input
+        logging.info(f"User input: {user_input}")
+        
         if user_input:
             # If user says "quit" or "exit", exit the application
             if user_input.lower() in ["quit", "exit"]:
@@ -46,8 +55,12 @@ def run_assistant():
 
             # Speak the response using speech assistant and update UI labels
             speech_assistant.speak(response)
-            window.user_said_label.setText(f"You said: {user_input}")
-            window.assistant_response_label.setText(f"Assistant: {response}")
+            window.user_said_label.setText(f"<b>You Said: </b> {user_input}")
+            window.assistant_response_label.setText(f"<b>Assistant: </b> {response}")
+            
+            # Log the assistant response
+            logging.info(f"Assistant response: {response}")
+
 
 
 # Set attribute for high DPI scaling

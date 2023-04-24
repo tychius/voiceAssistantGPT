@@ -1,0 +1,16 @@
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Distribution and build files
+dist/
+build/
+*.spec
+
+# Virtual environment
+venv/
+
+# Environment variables
+.env
+
